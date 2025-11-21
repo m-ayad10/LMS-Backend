@@ -1,6 +1,6 @@
 const { adminSignUp, getAdminDashboard, userActivateToggle } = require('../Controller/AdminController')
 const { AuthLogin, fetchAuth, changePassword, verifyToken } = require('../Controller/AuthController')
-const { updateIntructorActive } = require('../Controller/InstructorCOntroller')
+const { updateIntructorActive } = require('../Controller/InstructorController')
 const { adminSignUpValidation, AdminMiddleware } = require('../Middleware/AdminMiddleware')
 const { passwordValidation } = require('../Middleware/AuthMiddleware')
 const { LoginValidation } = require('../Middleware/StudentMiddleware')

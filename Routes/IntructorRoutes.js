@@ -12,6 +12,7 @@ const router=require('express').Router()
 // router.patch('/change-password/:id',passwordValidation,changePassword)
 // router.get('/:id',fetchAuth)
 
+
 router.post('/login',instructorLoginValidation,AuthLogin)
 router.post('/register',instructorSignUpValidation,imageUpload.single('profile'),instructorSignUp)
 router.patch('/',InstructorMiddleware,imageUpload.single('profile'),updateIntructor)
