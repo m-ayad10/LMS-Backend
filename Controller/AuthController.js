@@ -1,4 +1,4 @@
-const {uploadToCloudinary} = require("../Cloudinary/cloudinary");
+const { uploadToCloudinary } = require("../Cloudinary/cloudinary");
 const AuthModel = require("../Model/AuthModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -49,9 +49,10 @@ const AuthLogin = async (req, res) => {
         .status(401)
         .json({ message: "Invalid Credential", success: false });
     }
-    if(!Auth.isVerified&&Auth.role!=='admin')
-    {
-      return res.status(401).json({message:"User not verified",success:false})
+    if (!Auth.isVerified && Auth.role !== "admin") {
+      return res
+        .status(401)
+        .json({ message: "User not verified", success: false });
     }
     const comparePassword = await bcrypt.compare(password, Auth.password);
     if (!comparePassword) {
@@ -59,22 +60,27 @@ const AuthLogin = async (req, res) => {
         .status(401)
         .json({ message: "Invalid Credential", success: false });
     }
-    if(Auth.role==='instructor' && !Auth.isActive)
-    {
-      return res.status(403).json({message:"Access pending",success:false})
+    if (Auth.role === "instructor" && !Auth.isActive) {
+      return res
+        .status(403)
+        .json({ message: "Access pending", success: false });
     }
     const secret_key = process.env.SECRET_KEY;
-    const token = jwt.sign(
-      { id: Auth._id, role: Auth.role },
-      secret_key,
-      { expiresIn: "6d" }
-    );
-    res.cookie('academy_token',token,{httpOnly:true})
+    const token = jwt.sign({ id: Auth._id, role: Auth.role }, secret_key, {
+      expiresIn: "6d",
+    });
+    res.cookie("academy_token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
     res
       .status(200)
-      .json({ message: "Login successfully", success: true, data:Auth });
+      .json({ message: "Login successfully", success: true, data: Auth });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error", success: false ,error});
+    res
+      .status(500)
+      .json({ message: "Internal server error", success: false, error });
   }
 };
 
@@ -83,17 +89,23 @@ const verifyOTP = async (req, res) => {
     const { email, otp } = req.body;
 
     if (!email || !otp) {
-      return res.status(400).json({ message: "Email and OTP are required", success: false });
+      return res
+        .status(400)
+        .json({ message: "Email and OTP are required", success: false });
     }
 
     const auth = await AuthModel.findOne({ email });
 
     if (!auth) {
-      return res.status(404).json({ message: "User not found", success: false });
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
     }
 
     if (auth.isVerified) {
-      return res.status(200).json({ message: "Already verified", success: true });
+      return res
+        .status(200)
+        .json({ message: "Already verified", success: true });
     }
 
     if (Date.now() > auth.tokenExpiry) {
@@ -106,22 +118,24 @@ const verifyOTP = async (req, res) => {
 
     auth.isVerified = true;
     auth.verificationToken = "";
-    auth.tokenExpiry = null; 
+    auth.tokenExpiry = null;
     await auth.save();
 
-    return res.status(200).json({ message: "OTP verified successfully", success: true });
-
+    return res
+      .status(200)
+      .json({ message: "OTP verified successfully", success: true });
   } catch (error) {
     console.error("Error verifying OTP:", error);
-    return res.status(500).json({ message: "Internal server error", success: false });
+    return res
+      .status(500)
+      .json({ message: "Internal server error", success: false });
   }
 };
-
 
 const fetchAuth = async (req, res) => {
   try {
     // const { id } = req.params;
-    const id=req.user.id
+    const id = req.user.id;
     const Auth = await AuthModel.findOne({ _id: id });
     if (!Auth) {
       return res
@@ -136,35 +150,38 @@ const fetchAuth = async (req, res) => {
   }
 };
 
-const verifyToken=async(req,res)=>{
+const verifyToken = async (req, res) => {
   try {
-    const token= req.cookies.academy_token
-    const secret_key=process.env.SECRET_KEY
-    if(!token)
-    {
-      return res.status(404).json({message:"No token found",success:false})
+    const token = req.cookies.academy_token;
+    const secret_key = process.env.SECRET_KEY;
+    if (!token) {
+      return res
+        .status(404)
+        .json({ message: "No token found", success: false });
     }
-    const verify=await jwt.verify(token,secret_key)
-    if(!verify)
-    {
-      res.status(401).json({message:"In valid Token",success:false})
-      res.clearCookie('academy_token')
-      return
+    const verify = await jwt.verify(token, secret_key);
+    if (!verify) {
+      res.status(401).json({ message: "In valid Token", success: false });
+      res.clearCookie("academy_token");
+      return;
     }
-    const auth=await AuthModel.findOne({_id:verify.id})
-    res.status(200).json({message:'User valid',success:true,data:auth})
+    const auth = await AuthModel.findOne({ _id: verify.id });
+    res.status(200).json({ message: "User valid", success: true, data: auth });
   } catch (error) {
-    res.status(500).json({message:"Internal server error",error,success:false})
+    res
+      .status(500)
+      .json({ message: "Internal server error", error, success: false });
   }
-}
+};
 
 const deleteAuth = async (req, res) => {
   try {
     const { id } = req.params;
-    const Auth=await AuthModel.findOne({_id:id})
-    if(!Auth)
-    {
-      return res.status(404).json({message:"Auth not found",success:false})
+    const Auth = await AuthModel.findOne({ _id: id });
+    if (!Auth) {
+      return res
+        .status(404)
+        .json({ message: "Auth not found", success: false });
     }
     await AuthModel.deleteOne({ _id: id });
     res.status(204).json({ message: "Auth deleted", success: true });
@@ -211,15 +228,13 @@ const updateAuth = async (req, res) => {
 const changePassword = async (req, res) => {
   try {
     // const { id } = req.params;
-    const id=req.user.id  
-    const {prevPassword, password, confirmPassword } = req.body;
+    const id = req.user.id;
+    const { prevPassword, password, confirmPassword } = req.body;
     if (password !== confirmPassword) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Password don't match confirm password",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Password don't match confirm password",
+      });
     }
     const Auth = await AuthModel.findOne({ _id: id });
     if (!Auth) {
@@ -227,12 +242,13 @@ const changePassword = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Auth not found" });
     }
-    const comparePassword=await bcrypt.compare(prevPassword,Auth.password)
-    if(!comparePassword)
-    {
-      return res.status(401).json({message:"Wrong password",success:false})
+    const comparePassword = await bcrypt.compare(prevPassword, Auth.password);
+    if (!comparePassword) {
+      return res
+        .status(401)
+        .json({ message: "Wrong password", success: false });
     }
-    Auth.password=password
+    Auth.password = password;
     await Auth.save();
     res.status(200).json({ message: "Password changed", success: true });
   } catch (error) {
@@ -255,15 +271,25 @@ const fetchAllAuths = async (req, res) => {
   }
 };
 
-const logOut=(req,res)=>{
+const logOut = (req, res) => {
   try {
-    const id=req.user.id
-    res.clearCookie('academy_token')
-    res.status(200).json({message:"Logout successfully",success:true})
+    // const id = req.user.id;
+    res.clearCookie("academy_token", {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    });
+    res.status(200).json({ message: "Logout successfully", success: true });
   } catch (error) {
-    res.status(500).json({message:"Internal server error",success:false,error:error?.message||error})
+    res
+      .status(500)
+      .json({
+        message: "Internal server error",
+        success: false,
+        error: error?.message || error,
+      });
   }
-}
+};
 
 module.exports = {
   AuthSignUp,
@@ -275,5 +301,5 @@ module.exports = {
   fetchAllAuths,
   verifyToken,
   verifyOTP,
-  logOut
+  logOut,
 };

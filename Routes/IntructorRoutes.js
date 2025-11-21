@@ -1,5 +1,5 @@
 const { AuthLogin, changePassword, fetchAuth, verifyToken } = require('../Controller/AuthController')
-const { instructorSignUp, updateIntructor, getDashboardDetails } = require('../Controller/InstructorCOntroller')
+const { instructorSignUp, updateIntructor, getDashboardDetails } = require('../Controller/InstructorController')
 const { passwordValidation } = require('../Middleware/AuthMiddleware')
 const { instructorLoginValidation, instructorSignUpValidation, InstructorMiddleware } = require('../Middleware/InstructorMiddleware')
 const { imageUpload } = require('../multer/uploadMiddleware')
