@@ -17,7 +17,7 @@ app.listen(PORT,(err)=>{
     }
 })
 app.use(cors({
-    origin:['https://lms-frontend-git-main-mohammed-ayads-projects.vercel.app','http://localhost:5173'],
+    origin:['https://lms-frontend-git-main-mohammed-ayads-projects.vercel.app','https://lms-frontend-iota-liart.vercel.app','http://localhost:5173','https://lms-frontend-iota-liart.vercel.app'],
     methods:'GET,POST,PUT,PATCH,DELETE',
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials:true
