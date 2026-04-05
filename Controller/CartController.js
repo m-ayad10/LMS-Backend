@@ -11,7 +11,7 @@ const fetchCart = async (req, res) => {
     // const{ id:studentId}=req.params
     const cart = await CartModel.findOne({ studentId }).populate({
       path: "courses.courseId",
-      populate: { path: "instructorId", model: "auths" },
+      populate: { path: "instructorId", model: "auths", select: "firstName lastName profile" },
       select: "title price thumbnail instructorId",
     });
     res
@@ -60,7 +60,7 @@ const addToCart = async (req, res) => {
       await WishlistModel.deleteOne({ courseId, studentId })
       const cart = await CartModel.findOne({ studentId }).populate({
       path: "courses.courseId",
-      populate: { path: "instructorId", model: "auths" },
+      populate: { path: "instructorId", model: "auths", select: "firstName lastName profile" },
       select: "title price thumbnail instructorId",
     });
       const wishlist = await WishlistModel.find({ studentId }).populate(
@@ -124,7 +124,7 @@ const removeFromCart = async (req, res) => {
     await cart.save();
       const newCart = await CartModel.findOne({ studentId }).populate({
       path: "courses.courseId",
-      populate: { path: "instructorId", model: "auths" },
+      populate: { path: "instructorId", model: "auths", select: "firstName lastName profile" },
       select: "title price thumbnail instructorId",
     });
     res

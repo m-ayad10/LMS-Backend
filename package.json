@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "build": "babel . --out-dir dist --ignore node_modules,dist,uploads,scripts",
+    "build:ts": "tsc",
+    "build:watch": "tsc --watch",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "serve": "npm run build && npm start",
+    "lint": "echo 'No linter configured'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -20,9 +29,20 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.3",
     "multer": "^2.0.2",
-    "nodemailer": "^7.0.9",
+    "nodemailer": "^8.0.4",
+    "razorpay": "^2.9.6"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.28.6",
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.0",
+    "@types/express": "^4.17.0",
+    "@types/jsonwebtoken": "^9.0.0",
+    "@types/multer": "^1.4.0",
+    "@types/node": "^20.0.0",
     "nodemon": "^3.1.10",
-    "razorpay": "^2.9.6",
     "typescript": "^5.9.3"
   }
 }

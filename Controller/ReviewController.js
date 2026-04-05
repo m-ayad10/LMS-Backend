@@ -26,7 +26,7 @@ const uploadReview = async (req, res) => {
       { $inc: { totalNoOfRating: 1, totalRatings: star } },
       { new: true }
     );
-    const reviews = await ReviewModel.find({ courseId }).populate('studentId')
+    const reviews = await ReviewModel.find({ courseId }).populate({ path: 'studentId', select: 'firstName lastName profile' })
     res
       .status(201)
       .json({ message: "Review uploaded", success: true, reviews, course });
@@ -41,7 +41,7 @@ const updateReview = async (req, res) => {
   try {
     const { reviewId, courseId, message, star } = req.body;
     await ReviewModel.updateOne({ _id: reviewId }, { message, star });
-    const reviews = await ReviewModel.find({ courseId }).populate("studentId");
+    const reviews = await ReviewModel.find({ courseId }).populate({ path: "studentId", select: "firstName lastName profile" });
     res
       .status(200)
       .json({ message: "Review updated", success: true, data: reviews });
@@ -73,7 +73,7 @@ const fetchAllReviews = async (req, res) => {
       return res.status(400).json({ message: "Bad request", success: false });
     }
     const reviews = await ReviewModel.find({ courseId })
-      .populate('studentId')
+      .populate({ path: 'studentId', select: 'firstName lastName profile' })
       .sort({ createdAt: -1 });
     res
       .status(200)

@@ -20,7 +20,8 @@ const AuthSchema=new mongoose.Schema({
     password:{
         type:String,
         required:true,
-        trim:true
+        trim:true,
+        select: false
     },
     profile:{
         type:String,
@@ -40,10 +41,12 @@ const AuthSchema=new mongoose.Schema({
         type:String
     },
     verificationToken:{
-        type:String
+        type:String,
+        select: false
     },
     tokenExpiry:{
-        type:Date
+        type:Date,
+        select: false
     },
     totalCourses:{
         type:Number

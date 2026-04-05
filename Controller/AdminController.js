@@ -25,8 +25,8 @@ const getAdminDashboard = async (req, res) => {
   try {
     // const {id}=req.params
     // const id = req.user.id;
-    const instructors=await AuthModel.find({role:'instructor'})
-    const students=await AuthModel.find({role:"student"})
+    const instructors=await AuthModel.find({role:'instructor'}).select('firstName lastName email role isActive profile revenue bio totalCourses')
+    const students=await AuthModel.find({role:"student"}).select('firstName lastName email role isActive profile bio')
     const enrolled=await EnrollmentModel.find().populate('courseId')
     res
       .status(200)

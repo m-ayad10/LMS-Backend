@@ -84,7 +84,7 @@ const toggleArchieveCourse=async(req,res)=>{
         status:'active'
       }})
     }
-    const courses=await CourseModel.find({instructorId}).populate('instructorId')
+    const courses=await CourseModel.find({instructorId}).populate({ path: 'instructorId', select: 'firstName lastName profile bio' })
     res.status(200).json({message:"Course toggle Archieve successfully",success:true,data:courses})
   } catch (error) {
     res.status(500).json({message:"Internal server error",success:false,error})
@@ -102,7 +102,7 @@ const deleteCourse=async(req,res)=>{
     await CourseModel.updateOne({_id:id},{$set:{
       status:'deleted'
     }})
-    const courses=await CourseModel.find({status:'active'}).populate('instructorId')
+    const courses=await CourseModel.find({status:'active'}).populate({ path: 'instructorId', select: 'firstName lastName profile bio' })
     res.status(200).json({message:"Course deleted successfully",success:true,data:courses})
   } catch (error) {
     res.status(500).json({message:"Internal server error",success:false,error})
@@ -111,7 +111,7 @@ const deleteCourse=async(req,res)=>{
 
 const fetchAllCourse=async(req,res)=>{
   try {
-    const courses=await CourseModel.find({status:'active'}).populate('instructorId')
+    const courses=await CourseModel.find({status:'active'}).populate({ path: 'instructorId', select: 'firstName lastName profile bio' })
     res.status(200).json({message:"Fetched all courses",success:true,data:courses})
   } catch (error) {
     res.status(500).json({message:"Internal server error",success:false})
@@ -121,7 +121,7 @@ const fetchAllCourse=async(req,res)=>{
 const fetchCourse=async(req,res)=>{
   try {
     const {id}=req.params
-    const course=await CourseModel.findOne({_id:id,status:'active'}).populate('instructorId')
+    const course=await CourseModel.findOne({_id:id,status:'active'}).populate({ path: 'instructorId', select: 'firstName lastName profile bio' })
     if(!course)
     {
       return res.status(404).json({message:"Course not found",success:false})

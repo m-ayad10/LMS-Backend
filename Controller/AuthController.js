@@ -43,7 +43,7 @@ const AuthSignUp = async (req, res) => {
 const AuthLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const Auth = await AuthModel.findOne({ email });
+    const Auth = await AuthModel.findOne({ email }).select('+password');
     if (!Auth) {
       return res
         .status(401)
@@ -94,7 +94,7 @@ const verifyOTP = async (req, res) => {
         .json({ message: "Email and OTP are required", success: false });
     }
 
-    const auth = await AuthModel.findOne({ email });
+    const auth = await AuthModel.findOne({ email }).select('+verificationToken +tokenExpiry');
 
     if (!auth) {
       return res
@@ -236,7 +236,7 @@ const changePassword = async (req, res) => {
         message: "Password don't match confirm password",
       });
     }
-    const Auth = await AuthModel.findOne({ _id: id });
+    const Auth = await AuthModel.findOne({ _id: id }).select('+password');
     if (!Auth) {
       return res
         .status(404)
