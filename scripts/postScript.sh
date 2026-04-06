@@ -10,4 +10,5 @@ npm audit fix --force
 echo "Restarting server..."
 pm2 restart backend
 
+
 echo "Deployment completed!"
