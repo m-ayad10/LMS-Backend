@@ -27,6 +27,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 
+
 const studentRoute=require('./Routes/StudentRoutes')
 const instructorRoute=require('./Routes/IntructorRoutes')
 const adminRoute=require('./Routes/AdminRoutes')
