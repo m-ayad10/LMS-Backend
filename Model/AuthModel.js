@@ -64,6 +64,15 @@ AuthSchema.pre('save',async function(next){
     next()
 })
 
+AuthSchema.set('toJSON', {
+    transform: function(doc, ret) {
+        delete ret.password;
+        delete ret.verificationToken;
+        delete ret.tokenExpiry;
+        return ret;
+    }
+})
+
 
 const AuthModel=mongoose.model('auths',AuthSchema)
 
