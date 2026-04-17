@@ -1,0 +1,22 @@
+version: '5.1.2'
+services:
+  database:
+   image: mongo
+   container_name: mongodb
+   ports:
+    - 27017:27017
+   volumes: 
+    - mongo:/data/db
+
+  backend: 
+   container_name: backend_node
+   build:
+    context: ./
+    dockerfile: Dockerfile
+   environment:
+    - MONGO_URL=mongodb://mongodb:27017/expressdb
+   ports: 
+    - 3000:3000
+
+volumes:
+ mongo:

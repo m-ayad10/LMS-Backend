@@ -2,48 +2,59 @@
 
 A Learning Management System backend built with Node.js, Express, and MongoDB.
 
-## Installation
+## Installation Methods
 
-```bash
-npm install
-```
+You can run this project either manually (on your local machine) or using Docker.
 
-## Development
+### Prerequisites
 
-```bash
-# Start development server with auto-reload
-npm run dev
-```
+- **Manual Installation:**
+  - [Node.js](https://nodejs.org/) (v18 or higher recommended)
+  - [npm](https://www.npmjs.com/)
+  - [MongoDB](https://www.mongodb.com/) (if not using Docker)
+- **Docker Installation:**
+  - [Docker](https://www.docker.com/products/docker-desktop) (latest version)
+  - [Docker Compose](https://docs.docker.com/compose/) (v2+)
 
-## Build & Production
+---
 
-```bash
-# Build the project (currently JavaScript - ready for TypeScript migration)
-npm run build
+## Manual Installation
 
-# Build TypeScript (when you migrate to .ts files)
-npm run build:ts
+1. **Clone the repository:**
+	```bash
+	git clone <repo-url>
+	cd LMS
+	```
+2. **Install dependencies:**
+	```bash
+	npm install
+	```
+3. **Set up your environment variables:**
+	- Copy the example from below and create a `.env` file in the root directory.
+4. **Start MongoDB:**
+	- Make sure MongoDB is running locally (default: `mongodb://localhost:27017`).
+5. **Start the development server:**
+	```bash
+	npm run dev
+	```
 
-# Build and watch for TypeScript changes
-npm run build:watch
+---
 
-# Clean build artifacts
-npm run clean
+## Docker Installation
 
-# Build and start production server
-npm run serve
-```
+1. **Ensure Docker and Docker Compose are installed.**
+2. **Build and start the containers:**
+	```bash
+	docker compose up --build
+	```
+	This will start both the backend server and a MongoDB instance.
+3. **Environment Variables:**
+	- You can set environment variables in a `.env` file (Docker will use them if configured in the Dockerfile or docker-compose.yml).
+4. **Access the backend:**
+	- The backend will be available at `http://localhost:3000`.
 
-## Available Scripts
+---
 
-- `npm start` - Start the production server
-- `npm run dev` - Start development server with nodemon
-- `npm run build` - Build for deployment (currently JavaScript)
-- `npm run build:ts` - Compile TypeScript (for future .ts migration)
-- `npm run build:watch` - Compile TypeScript and watch for changes
-- `npm run clean` - Remove build artifacts
-- `npm run serve` - Build and start production server
-- `npm test` - Run tests (not implemented)
 
 ## Environment Variables
 
@@ -61,28 +72,3 @@ EMAIL_USER=your_email_user
 EMAIL_PASS=your_email_password
 ```
 
-## TypeScript Support
-
-This project is configured for TypeScript with type definitions already installed. To migrate from JavaScript to TypeScript:
-
-1. Rename `.js` files to `.ts`
-2. Update imports to use TypeScript syntax
-3. Use `npm run build:ts` instead of `npm run build`
-4. The TypeScript configuration is ready in `tsconfig.json`
-
-## Project Structure
-
-```
-├── Controller/          # Route controllers
-├── Middleware/          # Custom middleware
-├── Model/              # Mongoose models
-├── Routes/             # API routes
-├── Cloudinary/         # Cloudinary configuration
-├── Nodemailer/         # Email configuration
-├── multer/             # File upload configuration
-├── scripts/            # Utility scripts
-├── uploads/            # Uploaded files
-├── index.js            # Main application entry point
-├── db.js               # Database connection
-└── package.json        # Dependencies and scripts
-```
