@@ -34,7 +34,7 @@ jobs:
        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
        chmod 644 ~/.ssh/known_hosts
     - name: Add known Host 
-      run: shh-keygen -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+      run: ssh-keygen -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
     - name:  Execute remote SSH commands using SSH key
       uses: appleboy/ssh-action@v1
       with:
