@@ -12,7 +12,7 @@
     "prebuild": "npm run clean",
     "serve": "npm run build && npm start",
     "lint": "echo 'No linter configured'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx eslint ."
   },
   "keywords": [],
   "author": "",
