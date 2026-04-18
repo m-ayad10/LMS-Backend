@@ -36,12 +36,15 @@
     "@babel/cli": "^7.28.6",
     "@babel/core": "^7.29.0",
     "@babel/preset-env": "^7.29.2",
+    "@eslint/js": "^10.0.1",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.0",
     "@types/express": "^4.17.0",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/multer": "^1.4.0",
     "@types/node": "^20.0.0",
+    "eslint": "^10.2.1",
+    "globals": "^17.5.0",
     "nodemon": "^3.1.10",
     "typescript": "^5.9.3"
   }
