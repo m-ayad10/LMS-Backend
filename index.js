@@ -39,6 +39,10 @@ const cartRoute=require('./Routes/CartRoutes')
 const authRoute=require('./Routes/AuthRoutes')
 const courseRoute=require('./Routes/CourseRoutes')
 
+app.get('/health-check',(req,res)=>{
+    res.status(200).json({message:'good'})
+})
+
 app.use('/course',courseRoute)
 app.use('/',authRoute)
 app.use('/student',studentRoute)
