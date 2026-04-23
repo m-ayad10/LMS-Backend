@@ -44,6 +44,7 @@ app.get('/',(req,res)=>{
     res.status(200).json({message:'good'})
 })
 
+
 app.get('/check',(req,res)=>{
     res.status(200).json({message:'good'})
 })
